@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import "./product.css"
-// import { useState } from 'react'
+// import { useState } from 'react'c
 import { useQuery } from '@tanstack/react-query'
 export const Route = createFileRoute('/products/$productId')({
   component: ProductDetails,
@@ -9,7 +9,7 @@ export const Route = createFileRoute('/products/$productId')({
 function ProductDetails() {
 
   const {productId}=Route.useParams()
-  const {data:product,isLoading,error} = useQuery({
+  const {data:product,isLoading,error } = useQuery({
     queryKey:['product'],
     queryFn:()=>fetch(`https://dummyjson.com/products/${productId}`).then(res=>res.json())
   })

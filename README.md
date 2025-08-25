@@ -1,69 +1,144 @@
-# React + TypeScript + Vite
+# 🚀 TanStack Study Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is for learning **TanStack Router**, **TanStack Query**, and **TanStack Form** together in a simple React app.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Tech Stack
+- ⚛️ React 18 + TypeScript
+- 🛤️ TanStack Router (v1)
+- 📦 TanStack Query (v5)
+- 📝 TanStack Form
+- 🎨 CSS (optional, for styling)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📌 What I Learned
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 1. TanStack Router
+- Type-safe routing system.
+- Auto-generated `routeTree.gen.ts` keeps routes strongly typed.
+- Example usage:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+```tsx
+<Link to="/users/$userId" params={{ userId: "123" }}>
+  Go to User 123
+</Link>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+
+
+
+2. TanStack Query
+
+Handles data fetching, caching, and mutations.
+
+Queries → for reading data (GET).
+
+Mutations → for writing data (POST/PUT/DELETE).
+
+const { data, isLoading } = useQuery({
+  queryKey: ['users'],
+  queryFn: () => fetch('/api/users').then(r => r.json()),
+})
+
+
+3. TanStack Form
+
+Manages form state + validation.
+
+Works great with validation libraries like Zod.
+
+const form = useForm({
+  defaultValues: { name: "" },
+  onSubmit: async ({ value }) => {
+    await mutation.mutateAsync(value)
   },
-])
-```
+})
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+
+
+
+
+🔄 How Everything Fits
+
+// Import the auto maticaly generated route tree
+
+import { routeTree } from './routeTree.gen'
+
+
+
+const router = createRouter({ routeTree })
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
+
+// Render the app
+const queryClient = new QueryClient()
+
+ <StrictMode>
+      <QueryClientProvider client={queryClient}>
+
+      <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,   
+
+
+
+
+🖼️ Diagram (Simple Flow)
+
+Flow:
+
+User navigates → handled by Router
+
+Page needs data → Query fetches & caches it
+
+User submits form → Form validates & triggers Mutation
+
+UI updates automatically
+
+✅ Next Steps
+
+Add more routes: /products, /users, /about.
+
+Try queries + mutations with a fake API (like jsonplaceholder
+).
+
+Create forms with Zod validation.
+
+Deploy this repo to Vercel/Netlify.
+
+
+📂 Project Structure
+
+tanstack-study/
+├── src/
+│   ├── routes/       # TanStack routes
+│   
+│  
+├── public/
+├── package.json
+├── tsconfig.json
+└── README.md
+
+
+
+
+# install deps
+npm install
+
+# run app
+npm run dev
+
+
+
+---
+
+This gives you a **clean study repo with explanations + diagram**.  
+👉 Do you want me to also **create a second diagram (step-by-step of how Router, Query, and Form interact)** so beginners can get it even faster?
